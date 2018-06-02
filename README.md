@@ -1,4 +1,9 @@
 # Team Snowstorm
+## Our Team:
+* Jonathan Mai
+* Hayden VonCannon
+* Brendan Falagrady
+* Alex Mehr
 ## FireRocks Project
 
 ### Technology Used:
