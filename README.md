@@ -23,4 +23,4 @@ This project will be mainly utilizing the [Hearthstone API](https://market.masha
       * Name of deck
       * Array of cards
 * Landing page layout
-![Page Layout]()
+![Page Layout](./assets/images/DefaultLayout.png)
