@@ -19,7 +19,6 @@ function call() {
 call();
 
 $('#search').keypress(function(e) {
-    e.preventDefault();
     if(e.which == 13 && $('#search').val() !== '') {
         var value = $('#search').val();
         console.log($('#search').val())
