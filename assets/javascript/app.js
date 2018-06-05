@@ -5,26 +5,43 @@ var durabilityP = "?durability=1";
 
 
 
-function call() {
-    $.ajax({
-        url: queryUrl,
-        headers :
-            {"X-Mashape-Key": "S7jGwxLjYcmshC0yicFN1Q6Uq9Top1eA0DYjsnxQATIfAdbQnf"
-            },
-        method: "GET"
-    }).then(function (response) {
-        console.log(response);
-    })
-}
-call();
+// function call() {
+//     $.ajax({
+//         url: queryUrl,
+//         headers :
+//             {"X-Mashape-Key": "S7jGwxLjYcmshC0yicFN1Q6Uq9Top1eA0DYjsnxQATIfAdbQnf"
+//             },
+//         method: "GET"
+//     }).then(function (response) {
+//         console.log(response);
+//     })
+// }
+// call();
 
-$('#search').keypress(function(e) {
-    if(e.which == 13 && $('#search').val() !== '') {
-        var value = $('#search').val();
-        console.log($('#search').val())
-        $('#search').val('');
-        var column = $('<div class="col s4">');
-        column.text(value);
-        $('.mainRow').append(column);
-    }
+$('.searchBtn').on('click', function() {
+    event.preventDefault();
+    var value = $('#searchCard').val();
+    console.log(value);
+    $('#searchCard').val('');
+    var column = $('<div class="col s4">');
+    column.text(value);
+    $('.mainRow').append(column);
 });
+
+$('.save').on('click', function(){
+    var deckName = $('#createDeck').val().trim();
+    $('#createDeck').val('');
+    var listItem = $('<li>');
+    var button = $('<button class="btn purple deckBtn waves-effect">')
+    button.text(deckName);
+    listItem.append(button);
+    $('.deckList').append(listItem);
+});
+
+$('.deckBtn').on('click', function(){
+    $('.mainRow').empty();
+})
+
+$(document).ready(function(){
+    $(".modal").modal();    
+})

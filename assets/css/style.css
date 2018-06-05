@@ -10,7 +10,9 @@
 body{
     background-color: #fff8e1
 }
-.addDeck{
+.addDeck, .deckBtn{
     width: 100%;
-    margin-bottom: 20px;
+}
+.deckBtn{
+    margin-bottom: 5px;
 }
