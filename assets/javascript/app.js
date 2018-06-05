@@ -17,3 +17,8 @@ function call() {
     })
 }
 call();
+
+$(document).ready(function () {
+    $('.modal').modal();
+});
+
