@@ -30,7 +30,7 @@ This project will be mainly utilizing the [Hearthstone API](https://market.masha
   * Click submit
   * ajax api to hearthstone, will search for card name and return the card image with add button underneath in a modal
   * Clicking add will add the card to the main body area where deck content is shown
-  * Overwrites deck with newly saved card
+  * Appends deck with newly saved card
 ### Future Plans
 * Create a user login with email and password, add to Firebase as an object (look into modal)
   * A user object will contain: 
