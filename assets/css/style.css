@@ -1,0 +1,15 @@
+.side-nav{
+    height: 100vh;
+    width: 20%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.side-nav>li:first-child{
+    /* padding-top: 20px; */
+}
+body{
+    background-color: #fff8e1
+}
+.container{
+    position: relative;
+}
