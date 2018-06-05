@@ -1,14 +1,14 @@
 .side-nav{
     height: 100vh;
-    width: 20%;
+    width: 100%;
     margin-top: 0;
     margin-bottom: 0;
 }
+.sideBar{
+    padding: 0 !important;
+}
 body{
     background-color: #fff8e1
-}
-.container{
-    position: relative;
 }
 .addDeck{
     width: 100%;

@@ -17,3 +17,14 @@ function call() {
     })
 }
 call();
+
+$('#search').keypress(function(e) {
+    if(e.which == 13 && $('#search').val() !== '') {
+        var value = $('#search').val();
+        console.log($('#search').val())
+        $('#search').val('');
+        var column = $('<div class="col s4">');
+        column.text(value);
+        $('.mainRow').append(column);
+    }
+});
