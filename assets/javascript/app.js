@@ -1,24 +1,3 @@
-//jonathans stuff
-$('.searchBtn').on('click', function() {
-    event.preventDefault();
-    var value = $('#searchCard').val();
-    console.log(value);
-    $('#searchCard').val('');
-    var column = $('<div class="col s4">');
-    column.text(value);
-    $('.mainRow').append(column);
-});
-
-$('.save').on('click', function(){
-    var deckName = $('#createDeck').val().trim();
-    $('#createDeck').val('');
-    var listItem = $('<li>');
-    var button = $('<button class="btn purple deckBtn waves-effect">')
-    button.text(deckName);
-    listItem.append(button);
-    $('.deckList').append(listItem);
-});
-
 $('.deckBtn').on('click', function(){
     $('.mainRow').empty();
 })
@@ -41,7 +20,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 var queryUrl = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/";
-// var userSearch = whatever field we take for input
+
 //declaring card variable to use later
 var cardImage;
 //declaring variable to store the created deck in
@@ -63,26 +42,29 @@ class UserDeck {
     }
 }
 
-//on clicking submit, creating deck
-$("#deckSubmit").on("click", function (e) {
-    e.preventDefault();
-    var deckName = $("#name").val().trim();
-    var authorName = $("#author").val().trim();
+
+//on clicking save in deck create modal, creating deck
+$('.save').on('click', function(){
+    var deckName = $("#createDeck").val().trim();
+    var authorName = $("#addAuthor").val().trim();
     testDeck = new UserDeck(deckName, authorName)
     currentDeck = testDeck.deckId;
     console.log(testDeck);
-    database.ref.set(testDeck);
-})
+    console.log("test");
+    var button = $('<button class="btn purple deckBtn waves-effect">')
+    button.text(deckName);
+    $('.deckList').append(button);
+});
 
 //function for action after pressing add button
-$("body").on("click", "button", function () {
+$("body").on("click", ".addButton", function () {
     testDeck.addCard($(this).data('key'));
     console.log(testDeck);
 })
 
 //API call
-$("#submitButton").on("click", function (e) {
-    var userQ = $("#searchBar").val().trim()
+$('.searchBtn').on("click", function (e) {
+    var userQ = $("#searchCard").val().trim()
     var fullUrl = queryUrl + userQ + "?collectible=1";
     e.preventDefault();
     $.ajax({
@@ -95,19 +77,21 @@ $("#submitButton").on("click", function (e) {
     }).then(function (response) {
         //function to show the cards on the screen
         console.log(response);
-        $("#testDisplay").empty();
+        $(".mainRow").empty();
         function showResults() {
             for (var i = 0; i < response.length; i++) {
                 cardImage = response[i].img
                 var cardDiv = $("<div>")
                 var displayImg = $("<img>")
-                var addButton = $("<button>")
-                addButton.html("Add");
+                var addButton = $('<button class="btn purple deckBtn waves-effect">')
+                addButton.html("Add").addClass("addButton");
                 addButton.data("key", response[i]);
                 displayImg.attr("src", cardImage);
                 cardDiv.append(displayImg);
                 cardDiv.append(addButton);
-                $("#testDisplay").append(cardDiv);
+                var column = $('<div class="col s4">');
+                column.html(cardDiv);
+                $('.mainRow').append(column);
             }
 
         };
@@ -115,6 +99,7 @@ $("#submitButton").on("click", function (e) {
     })
 });
 
+//my search function
 $('#search').keypress(function (e) {
     e.preventDefault();
     if (e.which == 13 && $('#search').val() !== '') {
@@ -130,39 +115,3 @@ $('#search').keypress(function (e) {
 $(document).ready(function(){
     $('.modal').modal();
   });
-
- //copy from master 
-  var queryUrl = "https://omgvamp-hearthstone-v1.p.mashape.com/cards";
-var attackP = "?attack=";
-var costP = "?cost=";
-var durabilityP = "?durability=1";
-
-
-
-$('.searchBtn').on('click', function() {
-    event.preventDefault();
-    var value = $('#searchCard').val();
-    console.log(value);
-    $('#searchCard').val('');
-    var column = $('<div class="col s4">');
-    column.text(value);
-    $('.mainRow').append(column);
-});
-
-$('.save').on('click', function(){
-    var deckName = $('#createDeck').val().trim();
-    $('#createDeck').val('');
-    var listItem = $('<li>');
-    var button = $('<button class="btn purple deckBtn waves-effect">')
-    button.text(deckName);
-    listItem.append(button);
-    $('.deckList').append(listItem);
-});
-
-$('.deckBtn').on('click', function(){
-    $('.mainRow').empty();
-})
-
-$(document).ready(function(){
-    $(".modal").modal();    
-})
