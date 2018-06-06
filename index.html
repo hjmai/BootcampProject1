@@ -29,17 +29,18 @@
         <div class="row">
             <div class="col s9 mainBodyContainer center-align">
                 <div class="row">
-                    <form class="col s12">
+                    <form class="col s10">
                         <div class="row">
                             <div class="input-field col s6">
                                 <input id="searchCard" type="text" class="validate" autocomplete="off">
                                 <label for="searchCard">Search Card</label>
                             </div>
                             <div class="input-field col s1">
-                                <button class="btn waves-effect waves-light searchBtn" type="submit" name="action">Search</button>
+                                <button data-target="modal2" class="btn modal-trigger waves-effect waves-light searchBtn" type="submit" name="action">Search</button>
                             </div>
                         </div>
                     </form>
+                    <div id="currentDeckDisplay">Current Deck: </div>
                 </div>
                 <div class="row mainRow">
                 </div>
@@ -47,9 +48,6 @@
             <div class="col s3 sideBar">
                 <button data-target="modal1" class="btn modal-trigger addDeck">Add Deck</button>
                 <ul id="slide-out" class="right side-nav full center-align brown lighten-4 deckList">                    
-                    <li><button class="btn purple deckBtn waves-effect">Deck 1</button></li>
-                    <li><button class="btn purple deckBtn waves-effect">Deck 2</button></li>
-                    <li><button class="btn purple deckBtn waves-effect">Deck 3</button></li>
                 </ul>
             </div>
         </div>
@@ -63,6 +61,19 @@
         </div>
         <div class="modal-footer">
           <button class="modal-action modal-close btn-flat save">Save</button>
+        </div>
+      </div>
+
+      <div id="modal2" class="modal">
+        <div id="searchModal" class="modal-content">
+            <div class='container-fluid'>
+                <div id="searchRow" class='row'>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-action modal-close btn-flat">Done</button>
         </div>
       </div>
     <script src="./assets/javascript/app.js"></script>
