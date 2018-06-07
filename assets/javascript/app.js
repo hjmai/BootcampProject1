@@ -76,6 +76,8 @@ class UserDeck {
 $('.save').on('click', function () {
     var deckName = $("#createDeck").val().trim();
     var authorName = $("#addAuthor").val().trim();
+    var dClass = $("#deckClass").val();
+    console.log(dClass);
     selectedDeck = new UserDeck(deckName, authorName);
     database.ref('decks/' + selectedDeck.deckId).set({
         selectedDeck
@@ -169,7 +171,4 @@ $('#search').keypress(function (e) {
 
 $(document).ready(function () {
     $('.modal').modal();
-});
-$(document).ready(function () {
-    $('select').formSelect();
 });
