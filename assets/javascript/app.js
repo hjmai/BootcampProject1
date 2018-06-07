@@ -136,7 +136,7 @@ $('.searchBtn').on("click", function (e) {
         console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
-                // if (response[i].playerClass === selectedDeck.deckClass) {
+                if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
                     cardImage = response[i].img
                     var cardDiv = $("<div>")
                     var displayImg = $("<img>")
@@ -152,7 +152,7 @@ $('.searchBtn').on("click", function (e) {
                     $('#searchRow').append(column);
                 };
             };
-        // };
+        };
         showResults();
     })
 });
