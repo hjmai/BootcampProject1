@@ -76,9 +76,9 @@ class UserDeck {
 $('.save').on('click', function () {
     var deckName = $("#createDeck").val().trim();
     var authorName = $("#addAuthor").val().trim();
-    var dClass = $("#deckClass").val();
+    var dClass = $("#Deck-class").val();
     console.log(dClass);
-    selectedDeck = new UserDeck(deckName, authorName);
+    selectedDeck = new UserDeck(deckName, authorName, dClass);
     database.ref('decks/' + selectedDeck.deckId).set({
         selectedDeck
     });
@@ -122,21 +122,22 @@ $('.searchBtn').on("click", function (e) {
         console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
-                cardImage = response[i].img
-                var cardDiv = $("<div>")
-                var displayImg = $("<img>")
-                var addButton = $('<button class="btn purple addBtn waves-effect">')
-                addButton.html("Add").addClass("addButton");
-                addButton.data("key", response[i]);
-                addButton.attr("data-img", response[i].img);
-                displayImg.attr("src", cardImage);
-                cardDiv.append(displayImg);
-                cardDiv.append(addButton);
-                var column = $('<div class="col s4">');
-                column.html(cardDiv);
-                $('#searchRow').append(column);
+                if (response[i].playerClass === selectedDeck.deckClass) {
+                    cardImage = response[i].img
+                    var cardDiv = $("<div>")
+                    var displayImg = $("<img>")
+                    var addButton = $('<button class="btn purple addBtn waves-effect">')
+                    addButton.html("Add").addClass("addButton");
+                    addButton.data("key", response[i]);
+                    addButton.attr("data-img", response[i].img);
+                    displayImg.attr("src", cardImage);
+                    cardDiv.append(displayImg);
+                    cardDiv.append(addButton);
+                    var column = $('<div class="col s4">');
+                    column.html(cardDiv);
+                    $('#searchRow').append(column);
+                };
             };
-
         };
         showResults();
     })
