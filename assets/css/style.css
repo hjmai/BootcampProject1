@@ -1,6 +1,7 @@
 body{
     height: 90vh;
     background-color: #fff8e1;
+    overflow: hidden;
 }
 .side-nav{
     height: 90vh;
