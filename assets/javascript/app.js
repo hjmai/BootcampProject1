@@ -186,4 +186,5 @@ $('#search').keypress(function (e) {
 
 $(document).ready(function () {
     $('.modal').modal();
+    $('select').formSelect();
 });
