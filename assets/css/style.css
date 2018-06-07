@@ -1,6 +1,7 @@
 body{
     height: 100vh;
-    background-color: #fff8e1
+    background-color: #fff8e1;
+    overflow: auto;
 }
 .side-nav{
     height: 100vh;
@@ -17,7 +18,15 @@ body{
 .deckBtn{
     margin-bottom: 5px;
 }
-.mainRow{
+/* .scroll{
     height: 100vh;
+    overflow: scroll;
+} */
+/* .mainBodyContainer{
+    height: 100vh;
+    overflow: scroll;
+} */
+.mainRow{
+    height: 90vh;
     overflow: scroll;
 }
