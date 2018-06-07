@@ -1,4 +1,5 @@
 var selectedDeck;
+var cardCount = 0;
 //adds cards to deck, if it is the first card, we remove the placeholder in array
 function addCard(cardObject) {
     if (selectedDeck.firstCard) {
@@ -87,10 +88,23 @@ $('.save').on('click', function () {
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
     if (selectedDeck.cards.length < 29) {
-        addCard($(this).data('key'));
-        database.ref('decks/' + selectedDeck.deckId).set({
-            selectedDeck
-        });
+        for (var j = 0; j < selectedDeck.cards.length; j++) {
+            if (selectedDeck.cards.indexOf($(this).data('key') != -1)) {
+                cardCount++
+                console.log(cardCount);
+            }
+        }
+        if (cardCount < 2) {
+            addCard($(this).data('key'));
+            database.ref('decks/' + selectedDeck.deckId).set({
+                selectedDeck
+            });
+            cardCount = 0;
+        }
+        else {
+            alert("cant use cards more than twice");
+            cardCount = 0;
+        }
         $(".mainRow").empty();
         for (var i = 0; i < selectedDeck.cards.length; i++) {
             cardImage = selectedDeck.cards[i].img
@@ -122,7 +136,7 @@ $('.searchBtn').on("click", function (e) {
         console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
-                if (response[i].playerClass === selectedDeck.deckClass) {
+                // if (response[i].playerClass === selectedDeck.deckClass) {
                     cardImage = response[i].img
                     var cardDiv = $("<div>")
                     var displayImg = $("<img>")
@@ -138,7 +152,7 @@ $('.searchBtn').on("click", function (e) {
                     $('#searchRow').append(column);
                 };
             };
-        };
+        // };
         showResults();
     })
 });
