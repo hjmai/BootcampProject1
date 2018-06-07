@@ -45,3 +45,7 @@ $('.deckBtn').on('click', function(){
 $(document).ready(function(){
     $(".modal").modal();    
 })
+
+ $(document).ready(function(){
+    $('select').formSelect();
+  });
