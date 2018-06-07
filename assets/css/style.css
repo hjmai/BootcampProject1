@@ -1,18 +1,27 @@
+body{
+    height: 90vh;
+    background-color: #fff8e1;
+    overflow: hidden;
+}
 .side-nav{
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     margin-top: 0;
     margin-bottom: 0;
 }
 .sideBar{
     padding: 0 !important;
-}
-body{
-    background-color: #fff8e1
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .addDeck, .deckBtn{
     width: 100%;
 }
 .deckBtn{
     margin-bottom: 5px;
+}
+.mainRow{
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
