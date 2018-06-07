@@ -15,7 +15,7 @@ function addCard(cardObject) {
 //function for drawing cards
 function drawCards() {
     var mainCardDiv = $("<div>");
-    var mainDisplayImg = $("<img>");
+    var mainDisplayImg = $('<img class="responsive-img">');
     mainDisplayImg.attr("src", cardImage);
     mainCardDiv.append(mainDisplayImg);
     var column = $('<div class="col s4">');
@@ -83,16 +83,22 @@ $('.save').on('click', function () {
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
-    addCard($(this).data('key'));
-    database.ref('decks/' + selectedDeck.deckId).set({
-        selectedDeck
-    });
-    $(".mainRow").empty();
-    for (var i = 0; i < selectedDeck.cards.length; i++) {
-        cardImage = selectedDeck.cards[i].img
-        drawCards();
+    if (selectedDeck.cards.length < 29) {
+        addCard($(this).data('key'));
+        database.ref('decks/' + selectedDeck.deckId).set({
+            selectedDeck
+        });
+        $(".mainRow").empty();
+        for (var i = 0; i < selectedDeck.cards.length; i++) {
+            cardImage = selectedDeck.cards[i].img
+            drawCards();
+        }
+    }
+    else {
+        alert("Too many cards dude");
     }
 })
+
 
 //API call
 $('.searchBtn').on("click", function (e) {
@@ -110,6 +116,7 @@ $('.searchBtn').on("click", function (e) {
         //function to show the cards on the screen
         // console.log(response);
         $("#searchRow").empty();
+        console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
                 cardImage = response[i].img

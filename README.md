@@ -44,3 +44,6 @@ This project will be mainly utilizing the [Hearthstone API](https://market.masha
   * User can add decks
     * Prompt user for a deck name, save the object and store it onto firebase
   * Clicking on decks will populate main page with the array of cards (if nothing then itll be empty until adding cards)
+
+### Bugs
+* Not clearing main row div when someone else adds a deck
