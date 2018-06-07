@@ -1,4 +1,5 @@
 var selectedDeck;
+var cardCount = 0;
 //adds cards to deck, if it is the first card, we remove the placeholder in array
 function addCard(cardObject) {
     if (selectedDeck.firstCard) {
@@ -86,14 +87,27 @@ $('.save').on('click', function () {
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
-    if (selectedDeck.cards.length < 29) {
-        addCard($(this).data('key'));
-        database.ref('decks/' + selectedDeck.deckId).set({
-            selectedDeck
-        });
+    if (selectedDeck.cards.length < 30) {
+        for (var j = 0; j < selectedDeck.cards.length; j++) {
+            if ($(this).data('key') === selectedDeck.cards[j]) {
+                cardCount++
+                console.log(cardCount);
+            }
+        }
+        if (cardCount < 2) {
+            addCard($(this).data('key'));
+            database.ref('decks/' + selectedDeck.deckId).set({
+                selectedDeck
+            });
+            cardCount = 0;
+        }
+        else {
+            alert("cant use cards more than twice");
+            cardCount = 0;
+        }
         $(".mainRow").empty();
         for (var i = 0; i < selectedDeck.cards.length; i++) {
-            cardImage = selectedDeck.cards[i].img
+            cardImage = selectedDeck.cards[i].img;
             drawCards();
         }
     }
@@ -122,11 +136,11 @@ $('.searchBtn').on("click", function (e) {
         console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
-                if (response[i].playerClass === selectedDeck.deckClass) {
-                    cardImage = response[i].img
-                    var cardDiv = $("<div>")
-                    var displayImg = $("<img>")
-                    var addButton = $('<button class="btn purple addBtn waves-effect">')
+                if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
+                    cardImage = response[i].img;
+                    var cardDiv = $("<div>");
+                    var displayImg = $('<img class="responsive-img">');
+                    var addButton = $('<button class="btn purple addBtn waves-effect">');
                     addButton.html("Add").addClass("addButton");
                     addButton.data("key", response[i]);
                     addButton.attr("data-img", response[i].img);
