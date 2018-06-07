@@ -87,9 +87,9 @@ $('.save').on('click', function () {
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
-    if (selectedDeck.cards.length < 29) {
+    if (selectedDeck.cards.length < 30) {
         for (var j = 0; j < selectedDeck.cards.length; j++) {
-            if (selectedDeck.cards.indexOf($(this).data('key') != -1)) {
+            if ($(this).data('key') === selectedDeck.cards[j]) {
                 cardCount++
                 console.log(cardCount);
             }
