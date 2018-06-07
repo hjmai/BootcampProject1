@@ -1,3 +1,7 @@
+body{
+    height: 100vh;
+    background-color: #fff8e1
+}
 .side-nav{
     height: 100vh;
     width: 100%;
@@ -7,12 +11,13 @@
 .sideBar{
     padding: 0 !important;
 }
-body{
-    background-color: #fff8e1
-}
 .addDeck, .deckBtn{
     width: 100%;
 }
 .deckBtn{
     margin-bottom: 5px;
+}
+.mainRow{
+    height: 100vh;
+    overflow: scroll;
 }
