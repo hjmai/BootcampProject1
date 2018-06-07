@@ -59,9 +59,10 @@ var selectedDeck;
 
 //deck object class
 class UserDeck {
-    constructor(name, author) {
+    constructor(name, author, deckClass) {
         this.name = name;
         this.author = author;
+        this.deckClass = deckClass;
         //initialze array with placeholder value because firebase can't hold empty arrays
         this.cards = [1];
         this.complete = false;
