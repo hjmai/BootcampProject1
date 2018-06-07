@@ -1,16 +1,17 @@
 body{
-    height: 100vh;
+    height: 90vh;
     background-color: #fff8e1;
-    overflow: auto;
 }
 .side-nav{
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     margin-top: 0;
     margin-bottom: 0;
 }
 .sideBar{
     padding: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .addDeck, .deckBtn{
     width: 100%;
@@ -19,6 +20,7 @@ body{
     margin-bottom: 5px;
 }
 .mainRow{
-    height: 90vh;
-    overflow: scroll;
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
