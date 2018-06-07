@@ -107,7 +107,7 @@ $("body").on("click", ".addBtn", function () {
         }
         $(".mainRow").empty();
         for (var i = 0; i < selectedDeck.cards.length; i++) {
-            cardImage = selectedDeck.cards[i].img
+            cardImage = selectedDeck.cards[i].img;
             drawCards();
         }
     }
@@ -137,10 +137,10 @@ $('.searchBtn').on("click", function (e) {
         function showResults() {
             for (var i = 0; i < response.length; i++) {
                 if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
-                    cardImage = response[i].img
-                    var cardDiv = $("<div>")
-                    var displayImg = $("<img>")
-                    var addButton = $('<button class="btn purple addBtn waves-effect">')
+                    cardImage = response[i].img;
+                    var cardDiv = $("<div>");
+                    var displayImg = $('<img class="responsive-img">');
+                    var addButton = $('<button class="btn purple addBtn waves-effect">');
                     addButton.html("Add").addClass("addButton");
                     addButton.data("key", response[i]);
                     addButton.attr("data-img", response[i].img);
