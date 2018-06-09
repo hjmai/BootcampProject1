@@ -163,9 +163,11 @@ database.ref('decks/').on('value', function (snapshot) {
     drawCards();
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
+        var deckClass = obj.selectedDeck.deckClass.toLowerCase();
         var button = $('<button class="btn purple deckBtn waves-effect">');
         button.data("key", obj.selectedDeck);
-        button.text(obj.selectedDeck.name);
+        button.html('<img class="classIcon" style="height: 30px; width: 30px;" src="./assets/images/' + deckClass + '.png"> ' + obj.selectedDeck.name);
+        // button.text(obj.selectedDeck.name);
         $('.deckList').append(button);
         console.log(childSnapshot.val());
     })
