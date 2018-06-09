@@ -163,7 +163,7 @@ database.ref('decks/').on('value', function (snapshot) {
     drawCards();
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
-        var deckClass = obj.selectedDeck.deckClass.toLowerCase();
+        var deckClass = obj.selectedDeck.deckClass
         var button = $('<button class="btn purple deckBtn waves-effect">');
         button.data("key", obj.selectedDeck);
         button.html('<img class="classIcon" style="height: 30px; width: 30px;" src="./assets/images/' + deckClass + '.png"> ' + obj.selectedDeck.name);
@@ -189,4 +189,5 @@ $('#search').keypress(function (e) {
 $(document).ready(function () {
     $('.modal').modal();
     $('select').formSelect();
+    $('.tooltipped').tooltip();
 });
