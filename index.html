@@ -11,7 +11,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script src="./assets/javascript/jquery.js"></script>
     <script src="./assets/javascript/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.3/velocity.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +19,7 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo" style="margin-left: 20px;">FireRocks</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                
+                <li><a href="#">Twitter Feed</a></li>
             </ul>
         </div>
     </nav>
@@ -51,7 +50,7 @@
                                 <div><button id="downvote" class="tooltipped" data-position="left" data-tooltip="Downvote the deck"><i class="material-icons">arrow_downward</i></button></div>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="row mainRow">
                 </div>
@@ -70,6 +69,7 @@
                 <input type="text" id="addAuthor" placeholder="Author's Name" maxlength="20">
                 <div class="input-field col s12">
                     <select id="Deck-class" required>
+                        <option value="" disabled selected>Deck Class</option>
                         <option value="Druid">Druid</option>
                         <option value="Hunter">Hunter</option>
                         <option value="Mage">Mage</option>
