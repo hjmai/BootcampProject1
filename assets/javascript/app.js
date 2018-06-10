@@ -36,18 +36,20 @@ function drawCards(cardImage, loopedCard) {
 $('body').on('click', '.deckBtn', function () {
     $('.mainRow').empty();
     selectedDeck = $(this).data('key');
-    for (var i = 0; i < selectedDeck.cards.length; i++) {
-        var mainCardDiv = $("<div>");
-        var mainDisplayImg = $('<img class="responsive-img">');
-        var removeButton = $('<button class="btn purple waves-effect">');
-        removeButton.html("Remove").addClass("removeButton");
-        removeButton.data("key", selectedDeck.cards[i]);
-        mainDisplayImg.attr("src", selectedDeck.cards[i].img);
-        mainCardDiv.append(mainDisplayImg);
-        mainCardDiv.append(removeButton);
-        var column = $('<div class="col s4">');
-        column.html(mainCardDiv);
-        $('.mainRow').prepend(column);
+    if (!selectedDeck.firstCard) {
+        for (var i = 0; i < selectedDeck.cards.length; i++) {
+            var mainCardDiv = $("<div>");
+            var mainDisplayImg = $('<img class="responsive-img">');
+            var removeButton = $('<button class="btn purple waves-effect">');
+            removeButton.html("Remove").addClass("removeButton");
+            removeButton.data("key", selectedDeck.cards[i]);
+            mainDisplayImg.attr("src", selectedDeck.cards[i].img);
+            mainCardDiv.append(mainDisplayImg);
+            mainCardDiv.append(removeButton);
+            var column = $('<div class="col s4">');
+            column.html(mainCardDiv);
+            $('.mainRow').prepend(column);
+        }
     }
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
 })
@@ -151,6 +153,10 @@ $("body").on("click", ".removeButton", function (e) {
     database.ref('decks/' + selectedDeck.deckId).set({
         selectedDeck
     });
+    $(".mainRow").empty();
+    for (var q = 0; q < selectedDeck.cards.length; q++) {
+        drawCards(selectedDeck.cards[q].img, selectedDeck.cards[q]);
+    }
 });
 
 
@@ -195,7 +201,6 @@ $('.searchBtn').on("click", function (e) {
 database.ref('decks/').on('value', function (snapshot) {
     $('.deckList').empty();
     $(".mainRow").empty();
-    drawCards();
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
         var deckClass = obj.selectedDeck.deckClass
