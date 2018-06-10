@@ -14,14 +14,22 @@ function addCard(cardObject) {
 }
 
 //function for drawing cards
-function drawCards() {
-    var mainCardDiv = $("<div>");
-    var mainDisplayImg = $('<img class="responsive-img">');
-    mainDisplayImg.attr("src", cardImage);
-    mainCardDiv.append(mainDisplayImg);
-    var column = $('<div class="col s4">');
-    column.html(mainCardDiv);
-    $('.mainRow').prepend(column);
+function drawCards(cardImage, loopedCard) {
+    if (selectedDeck) {
+        var mainCardDiv = $("<div>");
+        var mainDisplayImg = $('<img class="responsive-img">');
+        if (!selectedDeck.firstCard) {
+            var removeButton = $('<button class="btn purple waves-effect">');
+            removeButton.html("Remove").addClass("removeButton");
+            removeButton.data("key", loopedCard);
+            mainDisplayImg.attr("src", cardImage);
+            mainCardDiv.append(mainDisplayImg);
+            mainCardDiv.append(removeButton);
+            var column = $('<div class="col s4">');
+            column.html(mainCardDiv);
+            $('.mainRow').prepend(column);
+        }
+    }
 }
 
 //when you select a deck
@@ -29,8 +37,17 @@ $('body').on('click', '.deckBtn', function () {
     $('.mainRow').empty();
     selectedDeck = $(this).data('key');
     for (var i = 0; i < selectedDeck.cards.length; i++) {
-        cardImage = selectedDeck.cards[i].img
-        drawCards();
+        var mainCardDiv = $("<div>");
+        var mainDisplayImg = $('<img class="responsive-img">');
+        var removeButton = $('<button class="btn purple waves-effect">');
+        removeButton.html("Remove").addClass("removeButton");
+        removeButton.data("key", selectedDeck.cards[i]);
+        mainDisplayImg.attr("src", selectedDeck.cards[i].img);
+        mainCardDiv.append(mainDisplayImg);
+        mainCardDiv.append(removeButton);
+        var column = $('<div class="col s4">');
+        column.html(mainCardDiv);
+        $('.mainRow').prepend(column);
     }
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
 })
@@ -78,20 +95,27 @@ $('.save').on('click', function () {
     var deckName = $("#createDeck").val().trim();
     var authorName = $("#addAuthor").val().trim();
     var dClass = $("#Deck-class").val();
-    console.log(dClass);
-    selectedDeck = new UserDeck(deckName, authorName, dClass);
-    database.ref('decks/' + selectedDeck.deckId).set({
-        selectedDeck
-    });
+    if (dClass != null && deckName != "" && authorName != "") {
+        selectedDeck = new UserDeck(deckName, authorName, dClass);
+        $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
+        database.ref('decks/' + selectedDeck.deckId).set({
+            selectedDeck
+        });
+        $('.mainRow').empty();
+        drawCards();
+    }
+    else {
+        alert("Need to fill in deck information");
+    }
 });
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
     if (selectedDeck.cards.length < 30) {
+        cardCount = 0;
         for (var j = 0; j < selectedDeck.cards.length; j++) {
             if ($(this).data('key') === selectedDeck.cards[j]) {
                 cardCount++
-                console.log(cardCount);
             }
         }
         if (cardCount < 2) {
@@ -99,22 +123,35 @@ $("body").on("click", ".addBtn", function () {
             database.ref('decks/' + selectedDeck.deckId).set({
                 selectedDeck
             });
-            cardCount = 0;
         }
         else {
             alert("cant use cards more than twice");
-            cardCount = 0;
         }
         $(".mainRow").empty();
-        for (var i = 0; i < selectedDeck.cards.length; i++) {
-            cardImage = selectedDeck.cards[i].img;
-            drawCards();
+        for (var k = 0; k < selectedDeck.cards.length; k++) {
+            drawCards(selectedDeck.cards[k].img, selectedDeck.cards[k]);
         }
     }
     else {
         alert("Too many cards dude");
     }
 })
+
+//function after pressing remove button{
+$("body").on("click", ".removeButton", function (e) {
+    var rmCard = $(this).data('key');
+    var deckLocation = selectedDeck.cards.indexOf(rmCard);
+    if (selectedDeck.cards.length === 1) {
+        selectedDeck.cards.splice(deckLocation, 1, '1');
+        selectedDeck.firstCard = true
+    }
+    else {
+        selectedDeck.cards.splice(deckLocation, 1);
+    }
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
+});
 
 
 //API call
@@ -130,10 +167,7 @@ $('.searchBtn').on("click", function (e) {
             },
         method: "GET"
     }).then(function (response) {
-        //function to show the cards on the screen
-        // console.log(response);
         $("#searchRow").empty();
-        console.log(response);
         function showResults() {
             for (var i = 0; i < response.length; i++) {
                 if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
@@ -160,6 +194,7 @@ $('.searchBtn').on("click", function (e) {
 //grabbing decks from database and showing them in sidebar and showing new cards as they are added
 database.ref('decks/').on('value', function (snapshot) {
     $('.deckList').empty();
+    $(".mainRow").empty();
     drawCards();
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
@@ -167,7 +202,6 @@ database.ref('decks/').on('value', function (snapshot) {
         button.data("key", obj.selectedDeck);
         button.text(obj.selectedDeck.name);
         $('.deckList').append(button);
-        console.log(childSnapshot.val());
     })
 
 })
