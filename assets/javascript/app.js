@@ -55,6 +55,7 @@ $('body').on('click', '.deckBtn', function () {
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
     $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
     $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+    $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
 })
 
 $(document).ready(function () {
@@ -148,7 +149,7 @@ $("body").on("click", ".addBtn", function () {
     }
 })
 
-//function after pressing remove button{
+//function after pressing remove button
 $("body").on("click", ".removeButton", function (e) {
     var rmCard = $(this).data('key');
     var deckLocation = selectedDeck.cards.indexOf(rmCard);
@@ -228,6 +229,7 @@ database.ref('decks/').on('value', function (snapshot) {
     if (selectedDeck) {
         $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
         $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
         for (var v = 0; v < selectedDeck.cards.length; v++) {
             drawCards(selectedDeck.cards[v].img, selectedDeck.cards[v]);
         }
