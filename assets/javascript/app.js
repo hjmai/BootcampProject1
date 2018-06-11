@@ -120,10 +120,12 @@ $('.save').on('click', function () {
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
+    cardCount = 0;
     if (selectedDeck.cards.length < 30) {
-        cardCount = 0;
         for (var j = 0; j < selectedDeck.cards.length; j++) {
-            if ($(this).data('key') === selectedDeck.cards[j]) {
+            var cardObj = $(this).data('key')
+            var selectedCardId = cardObj.cardId
+            if (selectedCardId === selectedDeck.cards[j].cardId) {
                 cardCount++
             }
         }
@@ -134,7 +136,7 @@ $("body").on("click", ".addBtn", function () {
             });
         }
         else {
-            alert("cant use cards more than twice");
+            alert("You can only use the same card twice in one deck.");
         }
         $(".mainRow").empty();
         for (var k = 0; k < selectedDeck.cards.length; k++) {
@@ -142,7 +144,7 @@ $("body").on("click", ".addBtn", function () {
         }
     }
     else {
-        alert("Too many cards dude");
+        alert("You can only have a maximum of 30 cards per deck.");
     }
 })
 
@@ -202,7 +204,6 @@ $('.searchBtn').on("click", function (e) {
                     findCount++;
                 };
             };
-            console.log(findCount);
             if (findCount === 0) {
                 $('#searchRow').html("No matching cards found. Only neutral cards or cards that match your class");
             }
