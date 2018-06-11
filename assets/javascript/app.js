@@ -209,7 +209,12 @@ $('.searchBtn').on("click", function (e) {
         showResults();
 
     }).fail(function () {
-        $('#searchRow').html("No results, please try searching again.")
+        if (selectedDeck) {
+            $('#searchRow').html("No results, please try searching again.")
+        }
+        else {
+            $('#searchRow').html("You need to select a deck before searching.")
+        };
     })
 });
 
@@ -227,6 +232,7 @@ database.ref('decks/').on('value', function (snapshot) {
         var button = $('<button class="btn purple deckBtn waves-effect">');
         button.data("key", obj.selectedDeck);
         button.html('<img class="classIcon" style="height: 30px; width: 30px;" src="./assets/images/' + deckClass + '.png"> ' + obj.selectedDeck.name);
+        button.prepend("&#8743; " + (obj.selectedDeck.upvotes - obj.selectedDeck.downvotes) + " ");
         // button.text(obj.selectedDeck.name);
         $('.deckList').append(button);
     })
