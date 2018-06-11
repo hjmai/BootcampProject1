@@ -42,6 +42,7 @@ $('body').on('click', '.deckBtn', function () {
             var mainDisplayImg = $('<img class="responsive-img">');
             var removeButton = $('<button class="btn purple waves-effect">');
             removeButton.html("Remove").addClass("removeButton");
+            removeButton.addClass("z-depth-3");
             removeButton.data("key", selectedDeck.cards[i]);
             mainDisplayImg.attr("src", selectedDeck.cards[i].img);
             mainCardDiv.append(mainDisplayImg);
@@ -194,6 +195,7 @@ $('.searchBtn').on("click", function (e) {
                     displayImg.attr("src", cardImage);
                     cardDiv.append(displayImg);
                     cardDiv.append(addButton);
+                    addButton.addClass("z-depth-3");
                     var column = $('<div class="col s4">');
                     column.html(cardDiv);
                     $('#searchRow').append(column);

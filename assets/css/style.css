@@ -28,3 +28,10 @@ body{
 .classIcon{
     vertical-align: middle;
 }
+
+#deckInfo {
+    border-style: solid;
+    border-width: 1px;
+    background-color:rgba(41, 41, 41, .25);
+    height: 75px;
+}
