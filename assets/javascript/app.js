@@ -225,6 +225,9 @@ database.ref('decks/').on('value', function (snapshot) {
     if (selectedDeck) {
         $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
         $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        for (var v = 0; v < selectedDeck.cards.length; v++) {
+            drawCards(selectedDeck.cards[v].img, selectedDeck.cards[v]);
+        }
     }
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
