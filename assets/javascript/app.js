@@ -52,6 +52,8 @@ $('body').on('click', '.deckBtn', function () {
         }
     }
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
+    $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+    $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
 })
 
 $(document).ready(function () {
@@ -88,6 +90,8 @@ class UserDeck {
         this.complete = false;
         this.firstCard = true;
         this.deckId = (Math.ceil(Math.random() * 100000));
+        this.upvotes = 0;
+        this.downvotes = 0;
     }
 };
 
@@ -100,6 +104,8 @@ $('.save').on('click', function () {
     if (dClass != null && deckName != "" && authorName != "") {
         selectedDeck = new UserDeck(deckName, authorName, dClass);
         $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
+        $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+        $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
         database.ref('decks/' + selectedDeck.deckId).set({
             selectedDeck
         });
@@ -201,6 +207,10 @@ $('.searchBtn').on("click", function (e) {
 database.ref('decks/').on('value', function (snapshot) {
     $('.deckList').empty();
     $(".mainRow").empty();
+    if (selectedDeck) {
+        $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+        $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+    }
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
         var deckClass = obj.selectedDeck.deckClass
@@ -223,6 +233,21 @@ $('#search').keypress(function (e) {
         column.text(value);
         $('.mainRow').append(column);
     }
+});
+
+//upvoting and downvoting buttons
+$("#upvote").on("click", function () {
+    selectedDeck.upvotes++;
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
+});
+
+$("#downvote").on("click", function () {
+    selectedDeck.downvotes++;
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
 });
 
 $(document).ready(function () {
