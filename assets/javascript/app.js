@@ -170,6 +170,7 @@ $("body").on("click", ".removeButton", function (e) {
 $('.searchBtn').on("click", function (e) {
     var userQ = $("#searchCard").val().trim();
     var fullUrl = queryUrl + userQ + "?collectible=1";
+    $("#searchRow").empty();
     e.preventDefault();
     $.ajax({
         url: fullUrl,
@@ -179,8 +180,8 @@ $('.searchBtn').on("click", function (e) {
             },
         method: "GET"
     }).then(function (response) {
-        $("#searchRow").empty();
         function showResults() {
+            var findCount = 0
             for (var i = 0; i < response.length; i++) {
                 if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
                     cardImage = response[i].img;
@@ -196,10 +197,19 @@ $('.searchBtn').on("click", function (e) {
                     var column = $('<div class="col s4">');
                     column.html(cardDiv);
                     $('#searchRow').append(column);
+                    findCount++;
                 };
             };
+            console.log(findCount);
+            if (findCount === 0) {
+                $('#searchRow').html("No matching cards found. Only neutral cards or cards that match your class");
+            }
         };
+
         showResults();
+
+    }).fail(function () {
+        $('#searchRow').html("No results, please try searching again.")
     })
 });
 
@@ -223,17 +233,6 @@ database.ref('decks/').on('value', function (snapshot) {
 
 })
 
-//my search function
-$('#search').keypress(function (e) {
-    e.preventDefault();
-    if (e.which == 13 && $('#search').val() !== '') {
-        var value = $('#search').val();
-        $('#search').val('');
-        var column = $('<div class="col s4">');
-        column.text(value);
-        $('.mainRow').append(column);
-    }
-});
 
 //upvoting and downvoting buttons
 $("#upvote").on("click", function () {
