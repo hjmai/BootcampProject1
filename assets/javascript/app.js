@@ -216,7 +216,7 @@ $('.searchBtn').on("click", function (e) {
                 };
             };
             if (findCount === 0) {
-                $('#searchRow').html("No matching cards found. Only neutral cards or cards that match your class");
+                $('#searchRow').html("No matching cards found. Only neutral cards or cards that match your class are available.");
             }
         };
 
