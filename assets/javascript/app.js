@@ -12,6 +12,16 @@ function addCard(cardObject) {
     }
 
 }
+//becuase an empty deck still has a placeholder in the card array, this shows a correct card count even if the deck is 'empty'
+function showCardCount() {
+    if (!selectedDeck.firstCard) {
+        $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
+    }
+    else {
+        $("#cardCount").html("Number of cards: 0/30")
+
+    }
+}
 
 //function for drawing cards
 function drawCards(cardImage, loopedCard) {
@@ -55,7 +65,7 @@ $('body').on('click', '.deckBtn', function () {
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
     $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
     $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
-    $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
+    showCardCount();
 })
 
 $(document).ready(function () {
@@ -229,7 +239,7 @@ database.ref('decks/').on('value', function (snapshot) {
     if (selectedDeck) {
         $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
         $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
-        $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
+        showCardCount();
         for (var v = 0; v < selectedDeck.cards.length; v++) {
             drawCards(selectedDeck.cards[v].img, selectedDeck.cards[v]);
         }
