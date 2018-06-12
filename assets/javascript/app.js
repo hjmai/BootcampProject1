@@ -12,27 +12,61 @@ function addCard(cardObject) {
     }
 
 }
+//becuase an empty deck still has a placeholder in the card array, this shows a correct card count even if the deck is 'empty'
+function showCardCount() {
+    if (!selectedDeck.firstCard) {
+        $("#cardCount").html("Number of cards: " + selectedDeck.cards.length + "/30")
+    }
+    else {
+        $("#cardCount").html("Number of cards: 0/30")
+
+    }
+}
 
 //function for drawing cards
-function drawCards() {
-    var mainCardDiv = $("<div>");
-    var mainDisplayImg = $('<img class="responsive-img">');
-    mainDisplayImg.attr("src", cardImage);
-    mainCardDiv.append(mainDisplayImg);
-    var column = $('<div class="col s4">');
-    column.html(mainCardDiv);
-    $('.mainRow').prepend(column);
+function drawCards(cardImage, loopedCard) {
+    if (selectedDeck) {
+        var mainCardDiv = $("<div>");
+        var mainDisplayImg = $('<img class="responsive-img">');
+        if (!selectedDeck.firstCard) {
+            var removeButton = $('<button class="btn purple waves-effect">');
+            removeButton.html("Remove").addClass("removeButton");
+            removeButton.data("key", loopedCard);
+            mainDisplayImg.attr("src", cardImage);
+            mainCardDiv.append(mainDisplayImg);
+            mainCardDiv.append(removeButton);
+            var column = $('<div class="col s4">');
+            column.html(mainCardDiv);
+            $('.mainRow').prepend(column);
+        }
+    }
 }
 
 //when you select a deck
 $('body').on('click', '.deckBtn', function () {
     $('.mainRow').empty();
     selectedDeck = $(this).data('key');
-    for (var i = 0; i < selectedDeck.cards.length; i++) {
-        cardImage = selectedDeck.cards[i].img
-        drawCards();
+    if (!selectedDeck.firstCard) {
+        for (var i = 0; i < selectedDeck.cards.length; i++) {
+            var mainCardDiv = $("<div>");
+            var mainDisplayImg = $('<img class="responsive-img">');
+            var removeButton = $('<button class="btn purple waves-effect">');
+            removeButton.html("Remove").addClass("removeButton");
+            removeButton.addClass("z-depth-3");
+            removeButton.data("key", selectedDeck.cards[i]);
+            mainDisplayImg.attr("src", selectedDeck.cards[i].img);
+            mainCardDiv.append(mainDisplayImg);
+            mainCardDiv.append(removeButton);
+            var column = $('<div class="col s4">');
+            column.html(mainCardDiv);
+            $('.mainRow').prepend(column);
+        }
     }
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
+    $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+    $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+    $("#deckAuthor").html("Author: " + selectedDeck.author);
+    showCardCount();
 })
 
 $(document).ready(function () {
@@ -69,6 +103,8 @@ class UserDeck {
         this.complete = false;
         this.firstCard = true;
         this.deckId = (Math.ceil(Math.random() * 100000));
+        this.upvotes = 0;
+        this.downvotes = 0;
     }
 };
 
@@ -78,20 +114,38 @@ $('.save').on('click', function () {
     var deckName = $("#createDeck").val().trim();
     var authorName = $("#addAuthor").val().trim();
     var dClass = $("#Deck-class").val();
-    console.log(dClass);
-    selectedDeck = new UserDeck(deckName, authorName, dClass);
-    database.ref('decks/' + selectedDeck.deckId).set({
-        selectedDeck
-    });
+    if (dClass != null && deckName != "" && authorName != "") {
+        selectedDeck = new UserDeck(deckName, authorName, dClass);
+        $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
+        $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+        $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        $("#deckAuthor").html("Author: " + selectedDeck.author);
+        database.ref('decks/' + selectedDeck.deckId).set({
+            selectedDeck
+        });
+        $('.mainRow').empty();
+        drawCards();
+    }
+    else {
+        M.toast({
+            html: 'You need to fill in deck information!', 
+            classes: 'red',
+            options: {
+                outDuration: 3000,
+            }
+        })
+    }
 });
 
 //function for action after pressing add button
 $("body").on("click", ".addBtn", function () {
+    cardCount = 0;
     if (selectedDeck.cards.length < 30) {
         for (var j = 0; j < selectedDeck.cards.length; j++) {
-            if ($(this).data('key') === selectedDeck.cards[j]) {
+            var cardObj = $(this).data('key')
+            var selectedCardId = cardObj.cardId
+            if (selectedCardId === selectedDeck.cards[j].cardId) {
                 cardCount++
-                console.log(cardCount);
             }
         }
         if (cardCount < 2) {
@@ -99,28 +153,57 @@ $("body").on("click", ".addBtn", function () {
             database.ref('decks/' + selectedDeck.deckId).set({
                 selectedDeck
             });
-            cardCount = 0;
         }
         else {
-            alert("cant use cards more than twice");
-            cardCount = 0;
+            M.toast({html: 'You can only use the same card twice in one deck.', 
+                classes: 'red',
+                options: {
+                    outDuration: 3000,
+                }
+            })
         }
         $(".mainRow").empty();
-        for (var i = 0; i < selectedDeck.cards.length; i++) {
-            cardImage = selectedDeck.cards[i].img;
-            drawCards();
+        for (var k = 0; k < selectedDeck.cards.length; k++) {
+            drawCards(selectedDeck.cards[k].img, selectedDeck.cards[k]);
         }
     }
     else {
-        alert("Too many cards dude");
+        M.toast({
+            html: 'You can only have a maximum of 30 cards per deck.', 
+            classes: 'red',
+            options: {
+                outDuration: 3000,
+            }
+        })
     }
 })
+
+//function after pressing remove button
+$("body").on("click", ".removeButton", function (e) {
+    var rmCard = $(this).data('key');
+    var deckLocation = selectedDeck.cards.indexOf(rmCard);
+    if (selectedDeck.cards.length === 1) {
+        selectedDeck.cards.splice(deckLocation, 1, '1');
+        selectedDeck.firstCard = true
+    }
+    else {
+        selectedDeck.cards.splice(deckLocation, 1);
+    }
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
+    $(".mainRow").empty();
+    for (var q = 0; q < selectedDeck.cards.length; q++) {
+        drawCards(selectedDeck.cards[q].img, selectedDeck.cards[q]);
+    }
+});
 
 
 //API call
 $('.searchBtn').on("click", function (e) {
     var userQ = $("#searchCard").val().trim();
     var fullUrl = queryUrl + userQ + "?collectible=1";
+    $("#searchRow").empty();
     e.preventDefault();
     $.ajax({
         url: fullUrl,
@@ -130,11 +213,8 @@ $('.searchBtn').on("click", function (e) {
             },
         method: "GET"
     }).then(function (response) {
-        //function to show the cards on the screen
-        // console.log(response);
-        $("#searchRow").empty();
-        console.log(response);
         function showResults() {
+            var findCount = 0
             for (var i = 0; i < response.length; i++) {
                 if (response[i].playerClass === selectedDeck.deckClass || response[i].playerClass === 'Neutral') {
                     cardImage = response[i].img;
@@ -147,46 +227,74 @@ $('.searchBtn').on("click", function (e) {
                     displayImg.attr("src", cardImage);
                     cardDiv.append(displayImg);
                     cardDiv.append(addButton);
+                    addButton.addClass("z-depth-3");
                     var column = $('<div class="col s4">');
                     column.html(cardDiv);
                     $('#searchRow').append(column);
+                    findCount++;
                 };
             };
+            if (findCount === 0) {
+                $('#searchRow').html("No matching cards found. Only neutral cards or cards that match your class are available.");
+            }
         };
+
         showResults();
+
+    }).fail(function () {
+        if (selectedDeck) {
+            $('#searchRow').html("No results, please try searching again.")
+        }
+        else {
+            $('#searchRow').html("You need to select a deck before searching.")
+        };
     })
 });
 
 //grabbing decks from database and showing them in sidebar and showing new cards as they are added
 database.ref('decks/').on('value', function (snapshot) {
     $('.deckList').empty();
-    drawCards();
+    $(".mainRow").empty();
+    if (selectedDeck) {
+        $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
+        $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        $("#deckAuthor").html("Author: " + selectedDeck.author);
+        showCardCount();
+        for (var v = 0; v < selectedDeck.cards.length; v++) {
+            drawCards(selectedDeck.cards[v].img, selectedDeck.cards[v]);
+        }
+    }
     snapshot.forEach(function (childSnapshot) {
         var obj = childSnapshot.val();
         var deckClass = obj.selectedDeck.deckClass.toLowerCase();
         var button = $('<button class="btn purple deckBtn waves-effect">');
         button.data("key", obj.selectedDeck);
-        button.html('<img class="classIcon" style="height: 30px; width: 30px;" src="./assets/images/' + deckClass + '.png"> ' + obj.selectedDeck.name);
+        button.html('<img class="classIcon" style="height: 30px; width: 30px;" src="./assets/images/' + deckClass.toLowerCase() + '.png"> ' + obj.selectedDeck.name);
+        button.prepend("&uarr; " + (obj.selectedDeck.upvotes - obj.selectedDeck.downvotes) + " ");
         // button.text(obj.selectedDeck.name);
         $('.deckList').append(button);
-        console.log(childSnapshot.val());
     })
 
 })
 
-//my search function
-$('#search').keypress(function (e) {
-    e.preventDefault();
-    if (e.which == 13 && $('#search').val() !== '') {
-        var value = $('#search').val();
-        $('#search').val('');
-        var column = $('<div class="col s4">');
-        column.text(value);
-        $('.mainRow').append(column);
-    }
+
+//upvoting and downvoting buttons
+$("#upvote").on("click", function () {
+    selectedDeck.upvotes++;
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
+});
+
+$("#downvote").on("click", function () {
+    selectedDeck.downvotes++;
+    database.ref('decks/' + selectedDeck.deckId).set({
+        selectedDeck
+    });
 });
 
 $(document).ready(function () {
     $('.modal').modal();
     $('select').formSelect();
+    $('.tooltipped').tooltip();
 });

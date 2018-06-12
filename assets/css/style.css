@@ -28,3 +28,7 @@ body{
 .classIcon{
     vertical-align: middle;
 }
+
+#deckInfo {
+    background-color:rgba(41, 41, 41, .25);
+}
