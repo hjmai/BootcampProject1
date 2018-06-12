@@ -29,7 +29,7 @@ function drawCards(cardImage, loopedCard) {
         var mainCardDiv = $("<div>");
         var mainDisplayImg = $('<img class="responsive-img">');
         if (!selectedDeck.firstCard) {
-            var removeButton = $('<button class="btn purple waves-effect">');
+            var removeButton = $('<br><button class="btn purple waves-effect">');
             removeButton.html("Remove").addClass("removeButton");
             removeButton.data("key", loopedCard);
             mainDisplayImg.attr("src", cardImage);
@@ -50,7 +50,7 @@ $('body').on('click', '.deckBtn', function () {
         for (var i = 0; i < selectedDeck.cards.length; i++) {
             var mainCardDiv = $("<div>");
             var mainDisplayImg = $('<img class="responsive-img">');
-            var removeButton = $('<button class="btn purple waves-effect">');
+            var removeButton = $('<br><button class="btn purple waves-effect">');
             removeButton.html("Remove").addClass("removeButton");
             removeButton.addClass("z-depth-3");
             removeButton.data("key", selectedDeck.cards[i]);
