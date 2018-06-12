@@ -65,6 +65,7 @@ $('body').on('click', '.deckBtn', function () {
     $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
     $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
     $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+    $("#deckAuthor").html("Author: " + selectedDeck.author);
     showCardCount();
 })
 
@@ -118,6 +119,7 @@ $('.save').on('click', function () {
         $("#currentDeckDisplay").html("Current Deck: " + selectedDeck.name);
         $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
         $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        $("#deckAuthor").html("Author: " + selectedDeck.author);
         database.ref('decks/' + selectedDeck.deckId).set({
             selectedDeck
         });
@@ -256,6 +258,7 @@ database.ref('decks/').on('value', function (snapshot) {
     if (selectedDeck) {
         $("#upvotedCount").html("Upvoted: " + selectedDeck.upvotes);
         $("#downvotedCount").html("Downvoted: " + selectedDeck.downvotes);
+        $("#deckAuthor").html("Author: " + selectedDeck.author);
         showCardCount();
         for (var v = 0; v < selectedDeck.cards.length; v++) {
             drawCards(selectedDeck.cards[v].img, selectedDeck.cards[v]);
