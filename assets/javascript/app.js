@@ -125,7 +125,13 @@ $('.save').on('click', function () {
         drawCards();
     }
     else {
-        alert("Need to fill in deck information");
+        M.toast({
+            html: 'You need to fill in deck information!', 
+            classes: 'red',
+            options: {
+                outDuration: 3000,
+            }
+        })
     }
 });
 
@@ -147,7 +153,12 @@ $("body").on("click", ".addBtn", function () {
             });
         }
         else {
-            alert("You can only use the same card twice in one deck.");
+            M.toast({html: 'You can only use the same card twice in one deck.', 
+                classes: 'red',
+                options: {
+                    outDuration: 3000,
+                }
+            })
         }
         $(".mainRow").empty();
         for (var k = 0; k < selectedDeck.cards.length; k++) {
@@ -155,7 +166,13 @@ $("body").on("click", ".addBtn", function () {
         }
     }
     else {
-        alert("You can only have a maximum of 30 cards per deck.");
+        M.toast({
+            html: 'You can only have a maximum of 30 cards per deck.', 
+            classes: 'red',
+            options: {
+                outDuration: 3000,
+            }
+        })
     }
 })
 
