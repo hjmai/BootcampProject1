@@ -9,7 +9,6 @@
 
 ### Technology Used:
 * [Hearthstone API](https://market.mashape.com/omgvamp/hearthstone)
-* Still figuring out a second API to use
 * [MaterializeCSS](https://materializecss.com/)
 
 ### Project Description:
